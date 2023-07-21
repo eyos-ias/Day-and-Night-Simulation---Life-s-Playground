@@ -1,0 +1,106 @@
+[gd_scene load_steps=10 format=3 uid="uid://cy2j3jt8m32i7"]
+
+[ext_resource type="Script" path="res://world.gd" id="1_pb6ur"]
+[ext_resource type="Texture2D" uid="uid://drnqjb2krrhwe" path="res://assets/Background_scene.png" id="1_qf13a"]
+[ext_resource type="Script" path="res://scripts/Day_Night_canvas.gd" id="2_7s07y"]
+[ext_resource type="PackedScene" uid="uid://bdqugghgmqmqs" path="res://animal.tscn" id="2_hngou"]
+[ext_resource type="Script" path="res://scripts/animal.gd" id="3_pp8cw"]
+[ext_resource type="Texture2D" uid="uid://3emoawp0vj7s" path="res://assets/winter.tres" id="3_wc7sc"]
+[ext_resource type="FontFile" uid="uid://cojdov8bwdtiu" path="res://assets/pixel_font.OTF" id="7_be237"]
+[ext_resource type="Script" path="res://UI.gd" id="7_sg75j"]
+[ext_resource type="Script" path="res://current_hour.gd" id="8_e17r3"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_pb6ur")
+
+[node name="Day_Night_canvas" type="CanvasModulate" parent="."]
+script = ExtResource("2_7s07y")
+gradient_texture = ExtResource("3_wc7sc")
+INITIAL_HOUR = 13
+
+[node name="BackgroundScene" type="Sprite2D" parent="."]
+position = Vector2(671, 401)
+scale = Vector2(1.11328, 1.11328)
+texture = ExtResource("1_qf13a")
+metadata/_edit_lock_ = true
+
+[node name="Animal" parent="." instance=ExtResource("2_hngou")]
+position = Vector2(1099, 502)
+script = ExtResource("3_pp8cw")
+
+[node name="Level" type="StaticBody2D" parent="."]
+position = Vector2(1357, 563)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Level"]
+polygon = PackedVector2Array(-2, -4, -310, -12, -311, 96, -414, 98, -414, -7, -573, -13, -580, 106, -687, 107, -687, -4, -932, -2, -934, 104, -1043, 111, -1043, -16, -1359, -7, -1357, 203, 8, 204)
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1187.0
+offset_top = 22.0
+offset_right = 1290.0
+offset_bottom = 86.0
+script = ExtResource("7_sg75j")
+metadata/_edit_group_ = true
+
+[node name="Clock" type="Label" parent="UI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("7_be237")
+theme_override_font_sizes/font_size = 40
+text = "00:00"
+
+[node name="Phase" type="Label" parent="UI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -2.0
+offset_top = 21.0
+offset_right = 155.0
+offset_bottom = 42.0
+
+[node name="current_hour" type="HSlider" parent="Control"]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 31.0
+offset_right = 354.0
+offset_bottom = 47.0
+max_value = 50.0
+script = ExtResource("8_e17r3")
+
+[node name="Label" type="Label" parent="Control/current_hour"]
+layout_mode = 0
+offset_left = -144.0
+offset_top = -9.0
+offset_right = -4.0
+offset_bottom = 59.0
+theme_override_fonts/font = ExtResource("7_be237")
+theme_override_font_sizes/font_size = 30
+text = "current hour:
+
+"
+
+[node name="time_speed" type="HSlider" parent="Control"]
+layout_mode = 0
+offset_left = 129.0
+offset_top = 67.0
+offset_right = 333.0
+offset_bottom = 83.0
+max_value = 50.0
+
+[node name="Label" type="Label" parent="Control/time_speed"]
+layout_mode = 0
+offset_left = -121.0
+offset_top = -10.0
+offset_right = -4.0
+offset_bottom = 24.0
+theme_override_fonts/font = ExtResource("7_be237")
+theme_override_font_sizes/font_size = 30
+text = "Day speed:
+"

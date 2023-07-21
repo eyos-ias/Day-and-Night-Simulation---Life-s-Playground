@@ -1,0 +1,31 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Day_Night_cycle"
+run/main_scene="res://world.tscn"
+config/features=PackedStringArray("4.0", "Forward Plus")
+boot_splash/bg_color=Color(0.996078, 0.94902, 0.752941, 1)
+boot_splash/image="res://Splash_Screen.png"
+boot_splash/fullsize=false
+config/icon="res://icon.svg"
+boot_splash/minimum_display_time=2000
+
+[display]
+
+window/size/viewport_width=1300
+window/size/viewport_height=700
+window/size/initial_position_type=0
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+renderer/rendering_method="gl_compatibility"
