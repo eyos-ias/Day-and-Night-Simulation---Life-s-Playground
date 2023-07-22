@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cy2j3jt8m32i7"]
+[gd_scene load_steps=11 format=3 uid="uid://cy2j3jt8m32i7"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_pb6ur"]
 [ext_resource type="Texture2D" uid="uid://drnqjb2krrhwe" path="res://assets/Background_scene.png" id="1_qf13a"]
@@ -7,8 +7,9 @@
 [ext_resource type="Script" path="res://scripts/animal.gd" id="3_pp8cw"]
 [ext_resource type="Texture2D" uid="uid://3emoawp0vj7s" path="res://assets/winter.tres" id="3_wc7sc"]
 [ext_resource type="FontFile" uid="uid://cojdov8bwdtiu" path="res://assets/pixel_font.OTF" id="7_be237"]
-[ext_resource type="Script" path="res://UI.gd" id="7_sg75j"]
+[ext_resource type="Script" path="res://scripts/UI.gd" id="7_xvbtq"]
 [ext_resource type="Script" path="res://current_hour.gd" id="8_e17r3"]
+[ext_resource type="Script" path="res://time_speed.gd" id="10_jobnp"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_pb6ur")
@@ -16,9 +17,11 @@ script = ExtResource("1_pb6ur")
 [node name="Day_Night_canvas" type="CanvasModulate" parent="."]
 script = ExtResource("2_7s07y")
 gradient_texture = ExtResource("3_wc7sc")
-INITIAL_HOUR = 13
+INGAME_SPEED = 1.0
+INITIAL_HOUR = 0
 
-[node name="BackgroundScene" type="Sprite2D" parent="."]
+[node name="BackgroundScene" type="Sprite2D" parent="Day_Night_canvas"]
+visible = false
 position = Vector2(671, 401)
 scale = Vector2(1.11328, 1.11328)
 texture = ExtResource("1_qf13a")
@@ -34,44 +37,41 @@ position = Vector2(1357, 563)
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Level"]
 polygon = PackedVector2Array(-2, -4, -310, -12, -311, 96, -414, 98, -414, -7, -573, -13, -580, 106, -687, 107, -687, -4, -932, -2, -934, 104, -1043, 111, -1043, -16, -1359, -7, -1357, 203, 8, 204)
 
-[node name="UI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 1187.0
-offset_top = 22.0
-offset_right = 1290.0
-offset_bottom = 86.0
-script = ExtResource("7_sg75j")
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("7_xvbtq")
 metadata/_edit_group_ = true
 
 [node name="Clock" type="Label" parent="UI"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 1157.0
+offset_top = 8.0
+offset_right = 1231.0
+offset_bottom = 51.0
 theme_override_fonts/font = ExtResource("7_be237")
 theme_override_font_sizes/font_size = 40
 text = "00:00"
 
 [node name="Phase" type="Label" parent="UI"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+anchors_preset = -1
+anchor_left = -0.0461538
+anchor_right = -0.0615385
+anchor_bottom = -0.0128571
+offset_left = 1213.0
+offset_top = 42.0
+offset_right = 1298.0
+offset_bottom = 85.0
+theme_override_fonts/font = ExtResource("7_be237")
+theme_override_font_sizes/font_size = 30
+text = "Phase"
+metadata/_edit_use_anchors_ = true
 
-[node name="Control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_left = -2.0
-offset_top = 21.0
-offset_right = 155.0
-offset_bottom = 42.0
+[node name="Control" type="CanvasLayer" parent="."]
 
 [node name="current_hour" type="HSlider" parent="Control"]
-layout_mode = 0
 offset_left = 150.0
 offset_top = 31.0
 offset_right = 354.0
 offset_bottom = 47.0
-max_value = 50.0
+max_value = 23.0
 script = ExtResource("8_e17r3")
 
 [node name="Label" type="Label" parent="Control/current_hour"]
@@ -86,13 +86,21 @@ text = "current hour:
 
 "
 
-[node name="time_speed" type="HSlider" parent="Control"]
+[node name="Value" type="Label" parent="Control/current_hour"]
 layout_mode = 0
+offset_left = 208.0
+offset_top = -3.0
+offset_right = 248.0
+offset_bottom = 20.0
+
+[node name="time_speed" type="HSlider" parent="Control"]
 offset_left = 129.0
 offset_top = 67.0
 offset_right = 333.0
 offset_bottom = 83.0
-max_value = 50.0
+min_value = 1.0
+value = 1.0
+script = ExtResource("10_jobnp")
 
 [node name="Label" type="Label" parent="Control/time_speed"]
 layout_mode = 0
@@ -102,5 +110,15 @@ offset_right = -4.0
 offset_bottom = 24.0
 theme_override_fonts/font = ExtResource("7_be237")
 theme_override_font_sizes/font_size = 30
-text = "Day speed:
+text = "day speed:
 "
+
+[node name="Value" type="Label" parent="Control/time_speed"]
+layout_mode = 0
+offset_left = 203.0
+offset_top = -6.0
+offset_right = 243.0
+offset_bottom = 17.0
+
+[connection signal="value_changed" from="Control/current_hour" to="." method="_on_current_hour_value_changed"]
+[connection signal="value_changed" from="Control/time_speed" to="." method="_on_time_speed_value_changed"]
