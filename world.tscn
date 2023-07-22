@@ -21,13 +21,13 @@ INGAME_SPEED = 1.0
 INITIAL_HOUR = 0
 
 [node name="BackgroundScene" type="Sprite2D" parent="Day_Night_canvas"]
-visible = false
 position = Vector2(671, 401)
 scale = Vector2(1.11328, 1.11328)
 texture = ExtResource("1_qf13a")
 metadata/_edit_lock_ = true
 
 [node name="Animal" parent="." instance=ExtResource("2_hngou")]
+visible = false
 position = Vector2(1099, 502)
 script = ExtResource("3_pp8cw")
 
